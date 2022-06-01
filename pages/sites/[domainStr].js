@@ -16,11 +16,13 @@ function Site({ site, links }) {
         subtitle,
         titlesColor,
         linkTextColor,
-        linkBackgroundColor
+        linkBackgroundColor,
+        backgroundImage
     } = site;
 
     useEffect(() => {
-        document.body.style.backgroundColor = bodyColor;
+        document.body.style.backgroundColor =  bodyColor;
+        document.body.style.backgroundImage = `url(${backgroundImage?.base64 || backgroundImage?.url})`;
     }, [])
 
     return <div className={styles.singleSiteWrapper}>
