@@ -1,0 +1,77 @@
+.singleSiteWrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.singleSiteContainer {
+    margin-top: 50px;
+    width: 800px;
+    background-color: lightblue;
+    padding: 50px;
+    border-radius: 10px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    position: relative;
+}
+
+.singleTitle, .singleSubtitle {
+    text-align: center;
+}
+
+.singleTitle {
+    margin: 20px 0 5px 0;
+}
+
+.singleSubtitle {
+    margin: 10px 0;
+}
+
+.headerImage {
+    border-radius: 100%;
+}
+
+.headerEmoji {
+    font-size: 175px;
+    line-height: 160px;
+}
+
+.linksList {
+    list-style: none;
+    padding: 0;
+}
+
+.individualLink {
+    width: 600px;
+    background-color: white;
+    height: 50px;
+    margin: 10px auto;
+    padding: 15px 30px;
+    border-radius: 30px;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.linkText {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.linkTextAndLiveStatus {
+    display: flex;
+}
+
+@media (max-width: 900px) {
+    .singleSiteContainer {
+        width: 90vw;
+    }
+
+    .individualLink {
+        width: 80vw;
+    }
+}
