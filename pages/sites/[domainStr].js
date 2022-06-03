@@ -1,12 +1,11 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import defaultHeader from '../../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import styles from './[domainStr].module.css';
 
 function Site({ site, links }) {
-    const [linksWithLive, setLinksWithLive] = useState([]);
-
     const {
         bodyColor,
         containerColor,
@@ -34,7 +33,7 @@ function Site({ site, links }) {
                     <div className={styles.headerEmoji}>{headerEmoji}</div>
                 :
                     <Image 
-                        src={headerImage?.url || headerImage?.base64 || "https://via.placeholder.com/300x300?text=image+here"} 
+                        src={headerImage?.url || headerImage?.base64 || defaultHeader} 
                         alt={title} className={styles.headerImage}
                         width="200" height="200"
                     />
