@@ -36,6 +36,7 @@ function Site({ site, links }) {
                         src={headerImage?.url || headerImage?.base64 || defaultHeader} 
                         alt={title} className={styles.headerImage}
                         width="200" height="200"
+                        priority={true}
                     />
             }
             <h1 className={styles.singleTitle} style={{ color: titlesColor }}>{title}</h1>
@@ -48,7 +49,7 @@ function Site({ site, links }) {
                                 <div className={styles.linkText}>{link.text}</div>
                                 {link.live ? <div>{link.live.isLive ? "- LIVE!" : "- not live"}</div> : null}
                             </div>
-                            <FontAwesomeIcon icon={link?.icon?.split("_")} />
+                            <FontAwesomeIcon icon={link?.icon?.split("_")} width="16" />
                         </a>
                     })}
                 </ul>
