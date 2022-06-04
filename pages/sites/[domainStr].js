@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Head from "next/head";
 import { useEffect } from "react";
 import defaultHeader from '../../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,37 +25,42 @@ function Site({ site, links }) {
         document.body.style.backgroundImage = `url(${backgroundImage?.base64 || backgroundImage?.url})`;
     }, [])
 
-    return <div className={styles.singleSiteWrapper}>
-        <div className={styles.screenshotArea} id="screenshot-area">
-            <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor }}>
-            {
-                headerEmoji 
-                ?
-                    <div className={styles.headerEmoji}>{headerEmoji}</div>
-                :
-                    <Image 
-                        src={headerImage?.url || headerImage?.base64 || defaultHeader} 
-                        alt={title} className={styles.headerImage}
-                        width="200" height="200"
-                        priority={true}
-                    />
-            }
-            <h1 className={styles.singleTitle} style={{ color: titlesColor }}>{title}</h1>
-            <h3 className={styles.singleSubtitle} style={{ color: titlesColor }}>{subtitle}</h3>
-            {links ?
-                <ul className={styles.linksList}>
-                    {links?.map((link) => {
-                        return <a href={link.href.startsWith("http") ? link.href : "https://" + link.href} target="_blank" rel="noreferrer" className={styles.individualLink} style={{ color: linkTextColor, backgroundColor: linkBackgroundColor }} key={link.href}>
-                            <div className={styles.linkTextAndLiveStatus}>
-                                <div className={styles.linkText}>{link.text}</div>
-                                {link.live ? <div>{link.live.isLive ? "- LIVE!" : "- not live"}</div> : null}
-                            </div>
-                            <FontAwesomeIcon icon={link?.icon?.split("_")} width="16" />
-                        </a>
-                    })}
-                </ul>
-            : null}
-        </div>
+    return <div>
+        <Head>
+            <title>{title}</title>
+        </Head>
+        <div className={styles.singleSiteWrapper}>
+            <div className={styles.screenshotArea} id="screenshot-area">
+                <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor }}>
+                {
+                    headerEmoji 
+                    ?
+                        <div className={styles.headerEmoji}>{headerEmoji}</div>
+                    :
+                        <Image 
+                            src={headerImage?.url || headerImage?.base64 || defaultHeader} 
+                            alt={title} className={styles.headerImage}
+                            width="200" height="200"
+                            priority={true}
+                        />
+                }
+                <h1 className={styles.singleTitle} style={{ color: titlesColor }}>{title}</h1>
+                <h3 className={styles.singleSubtitle} style={{ color: titlesColor }}>{subtitle}</h3>
+                {links ?
+                    <ul className={styles.linksList}>
+                        {links?.map((link) => {
+                            return <a href={link.href.startsWith("http") ? link.href : "https://" + link.href} target="_blank" rel="noreferrer" className={styles.individualLink} style={{ color: linkTextColor, backgroundColor: linkBackgroundColor }} key={link.href}>
+                                <div className={styles.linkTextAndLiveStatus}>
+                                    <div className={styles.linkText}>{link.text}</div>
+                                    {link.live ? <div>{link.live.isLive ? "- LIVE!" : "- not live"}</div> : null}
+                                </div>
+                                <FontAwesomeIcon icon={link?.icon?.split("_")} width="16" />
+                            </a>
+                        })}
+                    </ul>
+                : null}
+            </div>
+            </div>
         </div>
     </div>
 }
