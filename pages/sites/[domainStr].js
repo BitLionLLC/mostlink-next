@@ -17,7 +17,8 @@ function Site({ site, links }) {
         titlesColor,
         linkTextColor,
         linkBackgroundColor,
-        backgroundImage
+        backgroundImage,
+        liveNotificationColor
     } = site;
 
     useEffect(() => {
@@ -52,7 +53,7 @@ function Site({ site, links }) {
                             return <a href={link.href.startsWith("http") ? link.href : "https://" + link.href} target="_blank" rel="noreferrer" className={styles.individualLink} style={{ color: linkTextColor, backgroundColor: linkBackgroundColor }} key={link.href}>
                                 <div className={styles.linkTextAndLiveStatus}>
                                     <div className={styles.linkText}>{link.text}</div>
-                                    {link.live ? <div>{link.live.isLive ? "- LIVE!" : "- not live"}</div> : null}
+                                    {link.live ? <div>{link.live.isLive ? <><span>-</span><span style={{color: liveNotificationColor}}> LIVE!</span></> : "- not live"}</div> : null}
                                 </div>
                                 <FontAwesomeIcon icon={link?.icon?.split("_")} width="16" />
                             </a>
