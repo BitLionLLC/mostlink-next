@@ -18,12 +18,14 @@ function Site({ site, links }) {
         linkTextColor,
         linkBackgroundColor,
         backgroundImage,
-        liveNotificationColor
+        liveNotificationColor,
+        containerGradient,
+        bodyGradient
     } = site;
 
     useEffect(() => {
-        document.body.style.backgroundColor =  bodyColor;
-        document.body.style.backgroundImage = `url(${backgroundImage?.base64 || backgroundImage?.url})`;
+        document.body.style.backgroundColor = bodyColor;
+        document.body.style.backgroundImage = bodyGradient || `url(${backgroundImage?.base64 || backgroundImage?.url})`;
     }, [])
 
     return <div>
@@ -32,7 +34,7 @@ function Site({ site, links }) {
         </Head>
         <div className={styles.singleSiteWrapper}>
             <div className={styles.screenshotArea} id="screenshot-area">
-                <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor }}>
+                <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor, backgroundImage: containerGradient }}>
                 {
                     headerEmoji 
                     ?
