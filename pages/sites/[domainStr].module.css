@@ -3,6 +3,7 @@
     height: 100vh;
     display: flex;
     justify-content: center;
+    z-index: 2;
 }
 
 .singleSiteContainer {
@@ -15,6 +16,7 @@
     flex-flow: column;
     align-items: center;
     position: relative;
+    z-index: 11;
 }
 
 .singleTitle, .singleSubtitle {

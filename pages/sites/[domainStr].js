@@ -3,6 +3,9 @@ import Head from "next/head";
 import { useEffect } from "react";
 import defaultHeader from '../../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import ANIMATION_PRESETS from "../../assets/particlesPresets";
 
 import styles from './[domainStr].module.css';
 
@@ -20,7 +23,8 @@ function Site({ site, links }) {
         backgroundImage,
         liveNotificationColor,
         containerGradient,
-        bodyGradient
+        bodyGradient,
+        bodyAnimationStyle
     } = site;
 
     useEffect(() => {
@@ -28,10 +32,24 @@ function Site({ site, links }) {
         document.body.style.backgroundImage = bodyGradient || `url(${backgroundImage?.base64 || backgroundImage?.url})`;
     }, [])
 
+    const particlesInit = async (main) => {
+        // console.log(main);
+    
+        // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
+        // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+        // starting from v2 you can add only the features you need reducing the bundle size
+        await loadFull(main);
+    };
+    
+      const particlesLoaded = (container) => {
+        // console.log(container);
+    };
+
     return <div>
         <Head>
             <title>{title}</title>
         </Head>
+        {bodyAnimationStyle && <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={{...ANIMATION_PRESETS[bodyAnimationStyle], autoplay: true}} style={{height: '100vh', width: '100vw'}} />}
         <div className={styles.singleSiteWrapper}>
             <div className={styles.screenshotArea} id="screenshot-area">
                 <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor, backgroundImage: containerGradient }}>
