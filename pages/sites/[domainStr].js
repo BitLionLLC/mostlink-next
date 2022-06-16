@@ -25,7 +25,7 @@ function Site({ site, links }) {
         containerGradient,
         bodyGradient,
         bodyAnimationStyle
-    } = site;
+    } = site || {};
 
     useEffect(() => {
         document.body.style.backgroundColor = bodyColor;
