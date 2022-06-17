@@ -5,9 +5,9 @@ import defaultHeader from '../../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import ANIMATION_PRESETS from "../../assets/particlesPresets";
+import ANIMATION_PRESETS from "../assets/particlesPresets";
 
-import styles from './[domainStr].module.css';
+import styles from './[subdomain].module.css';
 
 function Site({ site, links }) {
     const {
@@ -85,8 +85,8 @@ function Site({ site, links }) {
 }
 
 export async function getServerSideProps(context) {
-    const { domainStr } = context.query;
-    const res = await fetch(`http://api.mostlink.co/api/sites/static/next/${domainStr}`);
+    const { subdomain } = context.query;
+    const res = await fetch(`http://api.mostlink.co/api/sites/static/next/subdomain-${subdomain}`);
     const data = await res.json();
     const { site, links } = data;
   
