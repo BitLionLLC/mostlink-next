@@ -51,8 +51,7 @@ function Site({ site, links }) {
         </Head>
         {bodyAnimationStyle && <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={{...ANIMATION_PRESETS[bodyAnimationStyle], autoplay: true}} style={{height: '100vh', width: '100vw'}} />}
         <div className={styles.singleSiteWrapper}>
-            <div className={styles.screenshotArea} id="screenshot-area">
-                <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor, backgroundImage: containerGradient }}>
+            <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor, backgroundImage: containerGradient }}>
                 {
                     headerEmoji 
                     ?
@@ -81,14 +80,13 @@ function Site({ site, links }) {
                     </ul>
                 : null}
             </div>
-            </div>
         </div>
     </div>
 }
 
 export async function getServerSideProps(context) {
     const { domainStr } = context.query;
-    const res = await fetch(`http://localhost:4000/api/sites/static/next/${domainStr}`);
+    const res = await fetch(`http://api.mostlink.co/api/sites/static/next/${domainStr}`);
     const data = await res.json();
     const { site, links } = data;
   
