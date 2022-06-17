@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Head from "next/head";
 import { useEffect } from "react";
-import defaultHeader from '../../assets/default-header.png';
+import defaultHeader from '../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
