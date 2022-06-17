@@ -86,7 +86,7 @@ function Site({ site, links }) {
 
 export async function getServerSideProps(context) {
     const { subdomain } = context.query;
-    const res = await fetch(`http://localhost:4000/api/sites/static/next/subdomain-${subdomain}`) || {};
+    const res = await fetch(`https://api.mostlink.co/api/sites/static/next/subdomain-${subdomain}`) || {};
     const data = await res.json();
     const { site, links } = data;
   
