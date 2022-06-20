@@ -5,9 +5,9 @@ import defaultHeader from '../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import ANIMATION_PRESETS from "../../assets/particlesPresets";
+import ANIMATION_PRESETS from "../../../assets/particlesPresets";
 
-import styles from './[subdomain].module.css';
+import styles from '../[subdomain].module.css';
 
 function SiteFromDomain({ site, links }) {
     const {
