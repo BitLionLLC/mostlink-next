@@ -86,7 +86,7 @@ function SiteFromDomain({ site, links }) {
 
 export async function getServerSideProps(context) {
     const { domain } = context.query;
-    const res = await fetch(`http://127.0.0.1:4000/api/sites/static/next/domain-${domain}`) || {}; // will be deployed along with Node on Heroku
+    const res = await fetch(`${process.env.API_HOST}/api/sites/static/next/domain-${domain}`) || {}; // will be deployed along with Node on Heroku
     const data = await res.json();
     const { site, links } = data;
   
