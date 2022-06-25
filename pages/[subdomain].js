@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Head from "next/head";
+import Script from "next/script";
 import { useEffect, useState } from "react";
 import defaultHeader from '../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -56,6 +57,17 @@ function Site({ site, links }) {
     }
 
     return <div>
+        {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-X10YJFYWXK" strategy="lazyOnload" />
+        <Script id={0} strategy="lazyOnload">
+            {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'G-X10YJFYWXK');
+            `}
+        </Script>
         <Head>
             <title>{title}</title>
         </Head>
