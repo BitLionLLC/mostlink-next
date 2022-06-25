@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Head from "next/head";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import defaultHeader from '../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Particles from "react-tsparticles";
@@ -10,6 +10,8 @@ import ANIMATION_PRESETS from "../assets/particlesPresets";
 import styles from './[subdomain].module.css';
 
 function Site({ site, links }) {
+    const [hoveredLinkIndex, setHoveredLinkIndex] = useState(null);
+
     const {
         bodyColor,
         containerColor,
@@ -41,9 +43,17 @@ function Site({ site, links }) {
         await loadFull(main);
     };
     
-      const particlesLoaded = (container) => {
+    const particlesLoaded = (container) => {
         // console.log(container);
     };
+
+    const onMouseEnter = (index) => {
+        setHoveredLinkIndex(index);
+    }
+
+    const onMouseLeave = () => {
+        setHoveredLinkIndex(null);
+    }
 
     return <div>
         <Head>
@@ -68,8 +78,15 @@ function Site({ site, links }) {
                 <h3 className={styles.singleSubtitle} style={{ color: titlesColor }}>{subtitle}</h3>
                 {links ?
                     <ul className={styles.linksList}>
-                        {links?.map((link) => {
-                            return <a href={link.href.startsWith("http") ? link.href : "https://" + link.href} target="_blank" rel="noreferrer" className={styles.individualLink} style={{ color: linkTextColor, backgroundColor: linkBackgroundColor }} key={link.href}>
+                        {links?.map((link, i) => {
+                            const hoverStyle = {color: linkBackgroundColor, background: linkTextColor};
+                            const nonHoverStyle = {color: linkTextColor, background: linkBackgroundColor};
+
+                            return <a href={link.href.startsWith("http") ? link.href : "https://" + link.href} 
+                                    target="_blank" rel="noreferrer" className={styles.individualLink} 
+                                    style={{ color: hoveredLinkIndex === i ? hoverStyle.color : nonHoverStyle.color, background: hoveredLinkIndex === i ? hoverStyle.background: nonHoverStyle.background }} 
+                                    key={link.href} onMouseEnter={() => onMouseEnter(i)} onMouseLeave={onMouseLeave}
+                                >
                                 <div className={styles.linkTextAndLiveStatus}>
                                     <div className={styles.linkText}>{link.text}</div>
                                     {link.live ? <div>{link.live.isLive ? <><span>-</span><span style={{color: liveNotificationColor}}> LIVE!</span></> : "- not live"}</div> : null}
