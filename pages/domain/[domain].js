@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Head from "next/head";
 import Script from "next/script";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import defaultHeader from '../../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Particles from "react-tsparticles";
@@ -9,6 +9,19 @@ import { loadFull } from "tsparticles";
 import ANIMATION_PRESETS from "../../assets/particlesPresets";
 
 import styles from '../[subdomain].module.css';
+
+const particlesInit = async (main) => {
+    // console.log(main);
+
+    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    await loadFull(main);
+};
+
+const particlesLoaded = (container) => {
+    return;
+};
 
 function SiteFromDomain({ site, links }) {
     const [hoveredLinkIndex, setHoveredLinkIndex] = useState(null);
@@ -30,23 +43,12 @@ function SiteFromDomain({ site, links }) {
         bodyAnimationStyle
     } = site || {};
 
+    const memoizedParticles = useMemo(() => <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={{...ANIMATION_PRESETS[bodyAnimationStyle], autoplay: true}} style={{height: '100vh', width: '100vw'}} />)
+
     useEffect(() => {
         document.body.style.backgroundColor = bodyColor;
         document.body.style.backgroundImage = bodyGradient || `url(${backgroundImage?.base64 || backgroundImage?.url})`;
     }, [])
-
-    const particlesInit = async (main) => {
-        // console.log(main);
-    
-        // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
-        // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-        // starting from v2 you can add only the features you need reducing the bundle size
-        await loadFull(main);
-    };
-    
-    const particlesLoaded = (container) => {
-        // console.log(container);
-    };
 
     const onMouseEnter = (index) => {
         setHoveredLinkIndex(index);
@@ -71,7 +73,7 @@ function SiteFromDomain({ site, links }) {
         <Head>
             <title>{title}</title>
         </Head>
-        {bodyAnimationStyle && <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={{...ANIMATION_PRESETS[bodyAnimationStyle], autoplay: true}} style={{height: '100vh', width: '100vw'}} />}
+        {bodyAnimationStyle && memoizedParticles}
         <div className={styles.singleSiteWrapper}>
             <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor, backgroundImage: containerGradient }}>
                 {
