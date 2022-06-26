@@ -58,8 +58,8 @@ function SiteFromDomain({ site, links }) {
 
     return <div>
         {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-X10YJFYWXK" strategy="lazyOnload" />
-        <Script id={0} strategy="lazyOnload">
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-X10YJFYWXK" />
+        <Script id={0}>
             {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
