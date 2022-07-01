@@ -81,12 +81,13 @@ function SiteFromDomain({ site, links }) {
                     ?
                         <div className={styles.headerEmoji}>{headerEmoji}</div>
                     :
-                        <Image 
-                            src={headerImage?.url || headerImage?.base64 || defaultHeader} 
-                            alt={title} className={styles.headerImage}
-                            width="200" height="200"
-                            priority={true}
-                        />
+                        <div alt={title} className={styles.headerImage} id="headerImg">
+                            <style jsx>{`
+                                #headerImg {
+                                    background-image: url(${headerImage?.url || headerImage?.base64 || defaultHeader})
+                                }
+                            `}</style>
+                        </div>
                 }
                 <h1 className={styles.singleTitle} style={{ color: titlesColor }}>{title}</h1>
                 <h3 className={styles.singleSubtitle} style={{ color: titlesColor }}>{subtitle}</h3>
