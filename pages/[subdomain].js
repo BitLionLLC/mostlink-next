@@ -46,7 +46,6 @@ function Site({ site, links }) {
     const memoizedParticles = useMemo(() => <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={{...ANIMATION_PRESETS[bodyAnimationStyle], autoplay: true}} style={{height: '100vh', width: '100vw'}} />)
 
     useEffect(() => {
-        console.log(defaultHeader)
         document.body.style.backgroundColor = bodyColor;
         document.body.style.backgroundImage = bodyGradient || `url(${backgroundImage?.base64 || backgroundImage?.url})`;
     }, [])
