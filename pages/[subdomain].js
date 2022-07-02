@@ -46,6 +46,7 @@ function Site({ site, links }) {
     const memoizedParticles = useMemo(() => <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={{...ANIMATION_PRESETS[bodyAnimationStyle], autoplay: true}} style={{height: '100vh', width: '100vw'}} />)
 
     useEffect(() => {
+        console.log(defaultHeader)
         document.body.style.backgroundColor = bodyColor;
         document.body.style.backgroundImage = bodyGradient || `url(${backgroundImage?.base64 || backgroundImage?.url})`;
     }, [])
@@ -81,17 +82,13 @@ function Site({ site, links }) {
                     ?
                         <div className={styles.headerEmoji}>{headerEmoji}</div>
                     :
-                        !headerImage?.url && !headerImage?.base64
-                        ?
-                            <Image className={styles.headerImage} src={defaultHeader} alt={title} height="200" width="200" />
-                        :
-                            <div className={styles.headerImage} id="headerImg">
-                                <style jsx>{`
-                                    #headerImg {
-                                        background-image: url(${headerImage?.url || headerImage?.base64})
-                                    }
-                                `}</style>
-                            </div>
+                        <div className={styles.headerImage} id="headerImg">
+                            <style jsx>{`
+                                #headerImg {
+                                    background-image: url(${headerImage?.url || headerImage?.base64 || defaultHeader.src})
+                                }
+                            `}</style>
+                        </div>
                 }
                 <h1 className={styles.singleTitle} style={{ color: titlesColor }}>{title}</h1>
                 <h3 className={styles.singleSubtitle} style={{ color: titlesColor }}>{subtitle}</h3>
