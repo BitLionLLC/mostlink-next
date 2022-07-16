@@ -23,7 +23,7 @@ const particlesLoaded = (container) => {
     return;
 };
 
-function Site({ site, links }) {
+function Site({ site, links, username, subdomain }) {
     const [hoveredLinkIndex, setHoveredLinkIndex] = useState(null);
 
     const {
@@ -71,6 +71,15 @@ function Site({ site, links }) {
             `}
         </Script>
         <Head>
+            {/* Twitter and Open Graph */}
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@mostlinkco" />
+            <meta name="twitter:creator" content="@thebitlion" />
+            <meta property="og:url" content={`https://${subdomain}.mostlink.io`} />
+            <meta property="og:title" content={title} />
+            <meta property="og:description" content={`Check out ${username}'s site built with Mostlink.`} />
+            <meta property="og:image" content="https://www.mostlink.co/static/media/example2.6e6ff089dce1fdf5fd71.png" />
+
             <title>{title}</title>
         </Head>
         {bodyAnimationStyle && memoizedParticles}
@@ -120,9 +129,9 @@ export async function getServerSideProps(context) {
     const { subdomain } = context.query;
     const res = await fetch(`${process.env.API_HOST}/api/sites/static/next/subdomain-${subdomain}`) || {};
     const data = await res.json();
-    const { site, links } = data;
+    const { site, links, username } = data;
   
-    return { props: { site, links } }
+    return { props: { site, links, username, subdomain } }
 }
   
 export default Site;
