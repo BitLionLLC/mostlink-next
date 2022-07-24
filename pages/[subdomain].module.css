@@ -1,80 +1,81 @@
 .singleSiteWrapper {
-    display: flex;
-    justify-content: center;
-    z-index: 2;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
 }
 
 .singleSiteContainer {
-    margin: 50px auto 50px auto;
-    width: 800px;
-    background-color: lightblue;
-    padding: 50px;
-    border-radius: 10px;
-    display: inline-flex;
-    flex-flow: column;
-    align-items: center;
-    position: relative;
-    z-index: 11;
+  margin: 50px auto;
+  width: 800px;
+  background-color: lightblue;
+  padding: 50px;
+  border-radius: 10px;
+  display: inline-flex;
+  flex-flow: column;
+  align-items: center;
+  position: relative;
+  z-index: 11;
 }
 
-.singleTitle, .singleSubtitle {
-    text-align: center;
+.singleTitle,
+.singleSubtitle {
+  text-align: center;
 }
 
 .singleTitle {
-    margin: 20px 0 5px 0;
+  margin: 20px 0 5px;
 }
 
 .singleSubtitle {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 .headerImage {
-    border-radius: 100%;
-    width: 200px;
-    height: 200px;
-    background-size: cover;
+  border-radius: 100%;
+  width: 200px;
+  height: 200px;
+  background-size: cover;
 }
 
 .headerEmoji {
-    font-size: 175px;
-    line-height: 160px;
+  font-size: 175px;
+  line-height: 160px;
 }
 
 .linksList {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .individualLink {
-    width: 600px;
-    background-color: white;
-    height: 50px;
-    margin: 10px auto;
-    padding: 15px 30px;
-    border-radius: 30px;
-    display: flex;
-    flex-flow: row;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
+  width: 600px;
+  background-color: white;
+  height: 50px;
+  margin: 10px auto;
+  padding: 15px 30px;
+  border-radius: 30px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
 }
 
 .linkText {
-    font-weight: bold;
-    margin-right: 10px;
+  font-weight: bold;
+  margin-right: 10px;
 }
 
 .linkTextAndLiveStatus {
-    display: flex;
+  display: flex;
 }
 
 @media (max-width: 900px) {
-    .singleSiteContainer {
-        width: 90vw;
-    }
+  .singleSiteContainer {
+    width: 90vw;
+  }
 
-    .individualLink {
-        width: 80vw;
-    }
+  .individualLink {
+    width: 80vw;
+  }
 }
