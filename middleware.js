@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { encodeDomainForPathSegment } from './lib/domainPath.js';
 
 /** Mirrors bin/reverse-proxy.js applyRouting URL rewrites so Netlify (no proxy) matches Heroku. */
 function hostNoPort(h) {
@@ -13,11 +14,12 @@ function rewriteSubpath(sub, pathname, search) {
 }
 
 function rewriteDomainPath(host, pathname, search) {
+  const enc = encodeDomainForPathSegment(host);
   const u = new URL(pathname + search, 'http://localhost');
   const p =
     u.pathname === '/'
-      ? `/domain/${host}`
-      : `/domain/${host}${u.pathname}`;
+      ? `/domain/${enc}`
+      : `/domain/${enc}${u.pathname}`;
   return p + u.search;
 }
 

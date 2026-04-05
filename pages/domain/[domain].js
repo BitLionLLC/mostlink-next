@@ -9,6 +9,7 @@ import { loadFull } from 'tsparticles';
 import ANIMATION_PRESETS from '../../assets/particlesPresets';
 
 import styles from '../[subdomain].module.css';
+import { normalizeDomainFromQuery } from '../../lib/domainPath';
 
 const particlesInit = async (main) => {
   // console.log(main);
@@ -126,7 +127,7 @@ function SiteFromDomain({ site, links, username, domain }) {
 }
 
 export async function getServerSideProps(context) {
-  const { domain } = context.query;
+  const domain = normalizeDomainFromQuery(context.query.domain);
   const res = await fetch(`${process.env.API_HOST}/api/sites/static/next/domain-${domain}`) || {}; // will be deployed along with Node on Heroku
   const data = await res.json();
   const { site, links, username } = data;
