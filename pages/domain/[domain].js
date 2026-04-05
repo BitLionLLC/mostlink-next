@@ -10,6 +10,7 @@ import ANIMATION_PRESETS from '../../assets/particlesPresets';
 
 import styles from '../[subdomain].module.css';
 import { normalizeDomainFromQuery } from '../../lib/domainPath';
+import { imageFieldSrc } from '../../lib/imageField';
 
 const particlesInit = async (main) => {
   // console.log(main);
@@ -48,7 +49,7 @@ function SiteFromDomain({ site, links, username, domain }) {
 
   useEffect(() => {
     document.body.style.backgroundColor = bodyColor;
-    document.body.style.backgroundImage = bodyGradient || `url(${backgroundImage?.base64 || backgroundImage?.url})`;
+    document.body.style.backgroundImage = bodyGradient || `url(${imageFieldSrc(backgroundImage) || ''})`;
   }, []);
 
   const onMouseEnter = (index) => {
@@ -94,7 +95,7 @@ function SiteFromDomain({ site, links, username, domain }) {
             <div className={styles.headerImage} id="headerImg">
               <style jsx>{`
                                 #headerImg {
-                                    background-image: url(${headerImage?.url || headerImage?.base64 || defaultHeader.src})
+                                    background-image: url(${imageFieldSrc(headerImage) || defaultHeader.src})
                                 }
                             `}</style>
             </div>
