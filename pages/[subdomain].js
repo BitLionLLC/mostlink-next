@@ -9,13 +9,14 @@ import '../lib/fontawesomePublic';
 
 import styles from './[subdomain].module.css';
 import { imageFieldSrc } from '../lib/imageField';
+import ParkingPage from '../components/ParkingPage';
 
 const ParticlesBackdrop = dynamic(() => import('../components/ParticlesBackdrop'), {
   ssr: false,
   loading: () => null,
 });
 
-function Site({ site, links, username, subdomain }) {
+function Site({ site, links, username, subdomain, parking }) {
   const [hoveredLinkIndex, setHoveredLinkIndex] = useState(null);
 
   const {
@@ -36,10 +37,16 @@ function Site({ site, links, username, subdomain }) {
   } = site || {};
 
   useEffect(() => {
+    if (parking) {
+      return;
+    }
     document.body.style.backgroundColor = bodyColor;
-  }, [bodyColor]);
+  }, [parking, bodyColor]);
 
   useEffect(() => {
+    if (parking) {
+      return;
+    }
     const bg =
       bodyGradient ||
       (imageFieldSrc(backgroundImage) ? `url(${imageFieldSrc(backgroundImage)})` : '');
@@ -56,7 +63,11 @@ function Site({ site, links, username, subdomain }) {
     }
     const t = setTimeout(apply, 0);
     return () => clearTimeout(t);
-  }, [bodyGradient, backgroundImage]);
+  }, [parking, bodyGradient, backgroundImage]);
+
+  if (parking) {
+    return <ParkingPage hostLabel={`${subdomain}.mostlink.co`} />;
+  }
 
   const onMouseEnter = (index) => {
     setHoveredLinkIndex(index);
@@ -137,16 +148,37 @@ function Site({ site, links, username, subdomain }) {
 
 export async function getServerSideProps(context) {
   const { subdomain } = context.query;
-  const res = await fetch(`${process.env.API_HOST}/api/sites/static/next/subdomain-${subdomain}`) || {};
+  const res = await fetch(
+    `${process.env.API_HOST}/api/sites/static/next/subdomain-${subdomain}`
+  );
+  if (!res.ok) {
+    return { notFound: true };
+  }
   const data = await res.json();
-  const { site, links, username } = data;
-
+  if (data.error) {
+    return { notFound: true };
+  }
+  if (data.parking) {
+    return {
+      props: {
+        parking: true,
+        username: data.username ?? null,
+        subdomain: String(subdomain),
+        site: null,
+        links: null,
+      },
+    };
+  }
+  if (!data.site) {
+    return { notFound: true };
+  }
   return {
     props: {
-      site: site ?? null,
-      links: links ?? null,
-      username: username ?? null,
-      subdomain,
+      parking: false,
+      site: data.site,
+      links: data.links ?? null,
+      username: data.username ?? null,
+      subdomain: String(subdomain),
     },
   };
 }

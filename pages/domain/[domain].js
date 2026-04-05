@@ -10,13 +10,14 @@ import '../../lib/fontawesomePublic';
 import styles from '../[subdomain].module.css';
 import { normalizeDomainFromQuery } from '../../lib/domainPath';
 import { imageFieldSrc } from '../../lib/imageField';
+import ParkingPage from '../../components/ParkingPage';
 
 const ParticlesBackdrop = dynamic(() => import('../../components/ParticlesBackdrop'), {
   ssr: false,
   loading: () => null,
 });
 
-function SiteFromDomain({ site, links, username, domain }) {
+function SiteFromDomain({ site, links, username, domain, parking }) {
   const [hoveredLinkIndex, setHoveredLinkIndex] = useState(null);
 
   const {
@@ -37,10 +38,16 @@ function SiteFromDomain({ site, links, username, domain }) {
   } = site || {};
 
   useEffect(() => {
+    if (parking) {
+      return;
+    }
     document.body.style.backgroundColor = bodyColor;
-  }, [bodyColor]);
+  }, [parking, bodyColor]);
 
   useEffect(() => {
+    if (parking) {
+      return;
+    }
     const bg =
       bodyGradient ||
       (imageFieldSrc(backgroundImage) ? `url(${imageFieldSrc(backgroundImage)})` : '');
@@ -57,7 +64,11 @@ function SiteFromDomain({ site, links, username, domain }) {
     }
     const t = setTimeout(apply, 0);
     return () => clearTimeout(t);
-  }, [bodyGradient, backgroundImage]);
+  }, [parking, bodyGradient, backgroundImage]);
+
+  if (parking) {
+    return <ParkingPage hostLabel={domain} />;
+  }
 
   const onMouseEnter = (index) => {
     setHoveredLinkIndex(index);
@@ -138,15 +149,36 @@ function SiteFromDomain({ site, links, username, domain }) {
 
 export async function getServerSideProps(context) {
   const domain = normalizeDomainFromQuery(context.query.domain);
-  const res = await fetch(`${process.env.API_HOST}/api/sites/static/next/domain-${domain}`) || {}; // will be deployed along with Node on Heroku
+  const res = await fetch(
+    `${process.env.API_HOST}/api/sites/static/next/domain-${domain}`
+  );
+  if (!res.ok) {
+    return { notFound: true };
+  }
   const data = await res.json();
-  const { site, links, username } = data;
-
+  if (data.error) {
+    return { notFound: true };
+  }
+  if (data.parking) {
+    return {
+      props: {
+        parking: true,
+        username: data.username ?? null,
+        domain,
+        site: null,
+        links: null,
+      },
+    };
+  }
+  if (!data.site) {
+    return { notFound: true };
+  }
   return {
     props: {
-      site: site ?? null,
-      links: links ?? null,
-      username: username ?? null,
+      parking: false,
+      site: data.site,
+      links: data.links ?? null,
+      username: data.username ?? null,
       domain,
     },
   };
