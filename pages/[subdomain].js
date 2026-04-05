@@ -1,28 +1,19 @@
-import Image from 'next/image';
 import Head from 'next/head';
 import Script from 'next/script';
-import { useEffect, useState, useMemo } from 'react';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 import defaultHeader from '../assets/default-header.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Particles from 'react-tsparticles';
-import { loadFull } from 'tsparticles';
-import ANIMATION_PRESETS from '../assets/particlesPresets';
+
+import '../lib/fontawesomePublic';
 
 import styles from './[subdomain].module.css';
 import { imageFieldSrc } from '../lib/imageField';
 
-const particlesInit = async (main) => {
-  // console.log(main);
-
-  // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
-  // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-  // starting from v2 you can add only the features you need reducing the bundle size
-  await loadFull(main);
-};
-
-const particlesLoaded = (container) => {
-  return;
-};
+const ParticlesBackdrop = dynamic(() => import('../components/ParticlesBackdrop'), {
+  ssr: false,
+  loading: () => null,
+});
 
 function Site({ site, links, username, subdomain }) {
   const [hoveredLinkIndex, setHoveredLinkIndex] = useState(null);
@@ -44,12 +35,28 @@ function Site({ site, links, username, subdomain }) {
     bodyAnimationStyle
   } = site || {};
 
-  const memoizedParticles = useMemo(() => <Particles id="tsparticles" init={particlesInit} loaded={particlesLoaded} options={{...ANIMATION_PRESETS[bodyAnimationStyle], autoplay: true}} style={{height: '100vh', width: '100vw'}} />);
-
   useEffect(() => {
     document.body.style.backgroundColor = bodyColor;
-    document.body.style.backgroundImage = bodyGradient || `url(${imageFieldSrc(backgroundImage) || ''})`;
-  }, []);
+  }, [bodyColor]);
+
+  useEffect(() => {
+    const bg =
+      bodyGradient ||
+      (imageFieldSrc(backgroundImage) ? `url(${imageFieldSrc(backgroundImage)})` : '');
+    if (!bg) {
+      document.body.style.backgroundImage = '';
+      return;
+    }
+    const apply = () => {
+      document.body.style.backgroundImage = bg;
+    };
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const id = requestIdleCallback(apply, { timeout: 2000 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(apply, 0);
+    return () => clearTimeout(t);
+  }, [bodyGradient, backgroundImage]);
 
   const onMouseEnter = (index) => {
     setHoveredLinkIndex(index);
@@ -61,8 +68,8 @@ function Site({ site, links, username, subdomain }) {
 
   return <div>
     {/* <!-- Global site tag (gtag.js) - Google Analytics --> */}
-    <Script async src="https://www.googletagmanager.com/gtag/js?id=G-X10YJFYWXK" />
-    <Script id={0}>
+    <Script strategy="lazyOnload" src="https://www.googletagmanager.com/gtag/js?id=G-X10YJFYWXK" />
+    <Script id="gtag-init" strategy="lazyOnload">
       {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
@@ -83,7 +90,7 @@ function Site({ site, links, username, subdomain }) {
 
       <title>{title}</title>
     </Head>
-    {bodyAnimationStyle && memoizedParticles}
+    {bodyAnimationStyle ? <ParticlesBackdrop bodyAnimationStyle={bodyAnimationStyle} /> : null}
     <div className={styles.singleSiteWrapper}>
       <div className={styles.singleSiteContainer} style={{ backgroundColor: containerColor, backgroundImage: containerGradient }}>
         {
@@ -91,13 +98,15 @@ function Site({ site, links, username, subdomain }) {
             ?
             <div className={styles.headerEmoji}>{headerEmoji}</div>
             :
-            <div className={styles.headerImage} id="headerImg">
-              <style jsx>{`
-                                #headerImg {
-                                    background-image: url(${imageFieldSrc(headerImage) || defaultHeader.src})
-                                }
-                            `}</style>
-            </div>
+            <img
+              className={styles.headerImage}
+              src={imageFieldSrc(headerImage) || defaultHeader.src}
+              alt=""
+              width={200}
+              height={200}
+              decoding="async"
+              fetchPriority="high"
+            />
         }
         <h1 className={styles.singleTitle} style={{ color: titlesColor }}>{title}</h1>
         <h3 className={styles.singleSubtitle} style={{ color: titlesColor }}>{subtitle}</h3>
