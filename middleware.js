@@ -61,13 +61,13 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  m = host.match(/^(\w+)\.mostlink\.io$/);
+  m = host.match(/^(\w+)\.mostlink\.co$/);
   if (m && m[1] !== 'www') {
     const nextPath = rewriteSubpath(m[1], pathname, search);
     return NextResponse.rewrite(new URL(nextPath, request.url));
   }
 
-  if (host === 'www.mostlink.io') {
+  if (host === 'www.mostlink.co') {
     return NextResponse.next();
   }
 

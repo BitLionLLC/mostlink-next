@@ -75,7 +75,7 @@ function Site({ site, links, username, subdomain }) {
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:site" content="@mostlinkco" />
       <meta name="twitter:creator" content="@thebitlion" />
-      <meta property="og:url" content={`https://${subdomain}.mostlink.io`} />
+      <meta property="og:url" content={`https://${subdomain}.mostlink.co`} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={`Check out ${username}'s site built with Mostlink.`} />
       <meta property="og:image" content="https://www.mostlink.co/static/media/example2.6e6ff089dce1fdf5fd71.png" />
