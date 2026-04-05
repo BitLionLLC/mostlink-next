@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
-import { encodeDomainForPathSegment } from './lib/domainPath.js';
+import { encodeDomainForPathSegment, getEffectiveHost } from './lib/domainPath.js';
 
 /** Mirrors bin/reverse-proxy.js applyRouting URL rewrites so Netlify (no proxy) matches Heroku. */
-function hostNoPort(h) {
-  return (h || '').split(':')[0].toLowerCase();
-}
 
 function rewriteSubpath(sub, pathname, search) {
   const u = new URL(pathname + search, 'http://localhost');
@@ -31,7 +28,7 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  const host = hostNoPort(request.headers.get('host'));
+  const host = getEffectiveHost(request);
   if (!host) {return NextResponse.next();}
 
   // Already rewritten (Heroku proxy or prior middleware pass).
