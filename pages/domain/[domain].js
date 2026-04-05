@@ -130,8 +130,15 @@ export async function getServerSideProps(context) {
   const res = await fetch(`${process.env.API_HOST}/api/sites/static/next/domain-${domain}`) || {}; // will be deployed along with Node on Heroku
   const data = await res.json();
   const { site, links, username } = data;
-  
-  return { props: { site, links, username, domain } };
+
+  return {
+    props: {
+      site: site ?? null,
+      links: links ?? null,
+      username: username ?? null,
+      domain,
+    },
+  };
 }
   
 export default SiteFromDomain;
