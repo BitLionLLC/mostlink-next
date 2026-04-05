@@ -1,0 +1,5 @@
+# Next.js on Netlify uses the OpenNext adapter automatically — no plugin pin needed.
+# https://docs.netlify.com/build/frameworks/framework-setup-guides/nextjs/overview/
+
+[build]
+  command = "yarn build"
