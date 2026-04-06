@@ -66,6 +66,29 @@ function SiteFromDomain({ site, links, username, domain, parking }) {
     return () => clearTimeout(t);
   }, [parking, bodyGradient, backgroundImage]);
 
+  useEffect(() => {
+    if (parking || !site?._id) {return;}
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ eventType: 'pageview', siteId: site._id }),
+    }).catch(() => {});
+  }, [site?._id, parking]);
+
+  const handleLinkClick = (link) => {
+    if (!site?._id) {return;}
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        eventType: 'linkclick',
+        siteId: site._id,
+        linkHref: link.href,
+        linkTitle: link.text,
+      }),
+    }).catch(() => {});
+  };
+
   if (parking) {
     return <ParkingPage hostLabel={domain} />;
   }
@@ -132,6 +155,7 @@ function SiteFromDomain({ site, links, username, domain, parking }) {
                 target="_blank" rel="noreferrer" className={styles.individualLink} 
                 style={{ color: hoveredLinkIndex === i ? hoverStyle.color : nonHoverStyle.color, background: hoveredLinkIndex === i ? hoverStyle.background: nonHoverStyle.background }} 
                 key={link.href} onMouseEnter={() => onMouseEnter(i)} onMouseLeave={onMouseLeave}
+                onClick={() => handleLinkClick(link)}
               >
                 <div className={styles.linkTextAndLiveStatus}>
                   <div className={styles.linkText}>{link.text}</div>
